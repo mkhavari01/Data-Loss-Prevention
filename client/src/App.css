@@ -230,3 +230,10 @@ body .form-group:not(:last-child) {
   cursor: pointer;
   padding: .1em .3em;
 }
+
+.er{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}

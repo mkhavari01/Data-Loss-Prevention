@@ -37,7 +37,8 @@ function App() {
     console.log(existingSessionID);
 
     if (existingSessionID) {
-      setSessionID(existingSessionID);
+      // setSessionID(existingSessionID);
+      submitSession(existingSessionID);
     } else {
       // Generate a new session ID and save it as an HttpOnly cookie
       const newSessionID = uuidv4();
@@ -61,13 +62,16 @@ function App() {
     socket.emit("send_message", obj);
   }
 
-  async function submitSession() {
+  async function submitSession(session) {
     try {
       console.log(process.env.REACT_APP_BACKEND_URL);
       const res = await axios.post(process.env.REACT_APP_BACKEND_URL, {
-        session: prevSession,
+        session: prevSession || session,
       });
-      console.log("res is", res.data);
+      setName(res.data.data.name);
+      setEmail(res.data.data.email);
+      setSessionID(res.data.data.sessionID);
+      Cookies.set("sessionID", res.data.data.sessionID, { expires: 9 });
     } catch (error) {
       console.log("error is:", error);
       // alert(error.message);
@@ -81,6 +85,14 @@ function App() {
     const text = spanRef.current.innerText;
     navigator.clipboard.writeText(text);
     alert("Session ID copied on the clipboard");
+  }
+
+  function newSessionID() {
+    setEmail("");
+    setName("");
+    const newSessionID = uuidv4();
+    Cookies.set("sessionID", newSessionID, { expires: 9 });
+    setSessionID(newSessionID);
   }
 
   return (
@@ -123,7 +135,7 @@ function App() {
                 onChange={(e) => updateInput(e)}
                 className="form-field"
                 type="text"
-                placeholder="Mahdi Khavari"
+                placeholder="Name"
                 name="name"
               />
             </div>
@@ -145,13 +157,22 @@ function App() {
         ) : (
           <p className="copy-btn">
             <span ref={spanRef}>{sessionID}</span>
-            <button
-              onClick={copyToClipboard}
-              className="button-86"
-              role="button"
-            >
-              Copy Session
-            </button>
+            <div className="er">
+              <button
+                onClick={copyToClipboard}
+                className="button-86"
+                role="button"
+              >
+                Copy Session
+              </button>
+              <button
+                onClick={newSessionID}
+                className="button-86"
+                role="button"
+              >
+                New Session
+              </button>
+            </div>
           </p>
         )}
         {/* <button onClick={sendData}>

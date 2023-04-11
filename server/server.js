@@ -40,6 +40,16 @@ io.on("connection", (socket) => {
       { $set: { name: data.name, email: data.email } },
       { new: true }
     );
+    if (!response) {
+      console.log("i came here");
+      const newUser = new UserModel({
+        name: data.name,
+        email: data.email,
+        sessionID: data.sessionID,
+      });
+      const response2 = await newUser.save();
+      console.log("response2", response2);
+    }
     console.log("response is", response);
   });
 });
