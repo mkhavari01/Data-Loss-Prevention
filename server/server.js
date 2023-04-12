@@ -6,6 +6,9 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/user.router.js");
 const cookieParser = require("cookie-parser");
 const UserModel = require("./models/user.model.js");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/task-cloud";
 
@@ -20,7 +23,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -28,29 +31,24 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on("join_room", (data) => {
-    console.log("u choose room", data);
-    socket.join(data);
-  });
-
   socket.on("send_message", async (data) => {
-    console.log("data is", data);
-    const response = await UserModel.findOneAndUpdate(
-      { sessionID: data.sessionID },
-      { $set: { name: data.name, email: data.email } },
-      { new: true }
-    );
-    if (!response) {
-      console.log("i came here");
-      const newUser = new UserModel({
-        name: data.name,
-        email: data.email,
-        sessionID: data.sessionID,
-      });
-      const response2 = await newUser.save();
-      console.log("response2", response2);
+    try {
+      const response = await UserModel.findOneAndUpdate(
+        { sessionID: data.sessionID },
+        { $set: { name: data.name, email: data.email } },
+        { new: true }
+      );
+      if (!response) {
+        const newUser = new UserModel({
+          name: data.name,
+          email: data.email,
+          sessionID: data.sessionID,
+        });
+        const response2 = await newUser.save();
+      }
+    } catch (error) {
+      console.log("Error:", error);
     }
-    console.log("response is", response);
   });
 });
 
@@ -63,7 +61,7 @@ mongoose
   })
   .then(() =>
     server.listen(3001, () => {
-      console.log("SERVER IS RUNNING");
+      console.log(process.env.MONGODB_URI);
     })
   )
   .catch((err) => console.log(err));

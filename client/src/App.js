@@ -5,26 +5,11 @@ import Cookies from "js-cookie";
 import io from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-// import { useHistory } from "react-router-dom";
 
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
-// axios.defaults.withCredentials = true;
 
 function App() {
   const spanRef = useRef(null);
-  // const history = useHistory();
-
-  // useEffect(() => {
-  //   const unlisten = history.listen(() => {
-  //     // Perform any necessary cleanup or save data here
-  //     submitSession();
-  //   });
-
-  //   return () => {
-  //     unlisten();
-  //   };
-  // }, []);
-
   const [sessionID, setSessionID] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,17 +19,11 @@ function App() {
   useEffect(() => {
     const existingSessionID = Cookies.get("sessionID");
 
-    console.log(existingSessionID);
-
     if (existingSessionID) {
       // setSessionID(existingSessionID);
       submitSession(existingSessionID);
     } else {
-      // Generate a new session ID and save it as an HttpOnly cookie
-      const newSessionID = uuidv4();
-      // const expires = new Date(new Date().getTime() + 20 * 1000);
-      Cookies.set("sessionID", newSessionID, { expires: 9 });
-      setSessionID(newSessionID);
+      newSessionID();
     }
   }, []);
 
@@ -64,14 +43,17 @@ function App() {
 
   async function submitSession(session) {
     try {
-      console.log(process.env.REACT_APP_BACKEND_URL);
       const res = await axios.post(process.env.REACT_APP_BACKEND_URL, {
         session: prevSession || session,
       });
-      setName(res.data.data.name);
-      setEmail(res.data.data.email);
-      setSessionID(res.data.data.sessionID);
-      Cookies.set("sessionID", res.data.data.sessionID, { expires: 9 });
+      if (res.data.data) {
+        setName(res.data.data.name);
+        setEmail(res.data.data.email);
+        setSessionID(res.data.data.sessionID);
+        Cookies.set("sessionID", res.data.data.sessionID, { expires: 9 });
+      } else {
+        newSessionID();
+      }
     } catch (error) {
       console.log("error is:", error);
       // alert(error.message);
