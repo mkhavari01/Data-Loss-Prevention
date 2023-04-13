@@ -283,3 +283,44 @@ table th {
 .header{
   cursor: default;
 }
+
+.table-wrapper {
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+p{
+  text-align: center;
+}
+
+tr{
+  border-bottom:1px black solid ;
+}
+
+td {
+  border-right:1px black solid ;
+}
+
+tbody{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 552px) {
+  .button-92 {
+    width: auto;
+    font-size: 16px;
+    transform: none;
+    padding: 10px;
+  }
+  .tbody-wrapper {
+    max-height: 3200px;
+    max-width: 320px;
+    overflow-y: scroll;
+  }
+}

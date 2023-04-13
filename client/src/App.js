@@ -203,29 +203,33 @@ function App() {
       </button> */}
         {loginMdoe && allSessions ? (
           <>
-            <table className="zigzag">
-              <thead>
-                <tr>
-                  <th className="header">Name</th>
-                  <th className="header">Email</th>
-                  <th className="header">Session</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allSessions.map((el) => {
-                  return (
-                    <tr
-                      key={uuidv4()}
-                      onClick={() => checkSession(el.sessionID)}
-                    >
-                      <td>{el.name}</td>
-                      <td>{el.email}</td>
-                      <td>{el.sessionID}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="table-wrapper">
+              <table className="zigzag table">
+                {/* <thead>
+                  <tr>
+                    <th className="header">Name</th>
+                    <th className="header">Email</th>
+                    <th className="header">Session</th>
+                  </tr>
+                </thead> */}
+                <tbody>
+                  <div className="tbody-wrapper">
+                    {allSessions.map((el) => {
+                      return (
+                        <tr
+                          key={uuidv4()}
+                          onClick={() => checkSession(el.sessionID)}
+                        >
+                          <td>{el.name}</td>
+                          <td>{el.email}</td>
+                          <td>{el.sessionID}</td>
+                        </tr>
+                      );
+                    })}
+                  </div>
+                </tbody>
+              </table>
+            </div>
           </>
         ) : null}
       </div>
