@@ -15,6 +15,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [prevSession, setPrevSession] = useState("");
   const [loginMdoe, setloginMdoe] = useState(false);
+  const [allSessions, setAllSessions] = useState(null);
 
   useEffect(() => {
     const existingSessionID = Cookies.get("sessionID");
@@ -77,11 +78,47 @@ function App() {
     setSessionID(newSessionID);
   }
 
+  async function handleChange() {
+    setloginMdoe(!loginMdoe);
+    if (!loginMdoe) {
+      console.log("we r in here");
+      try {
+        const response = await axios.get(
+          process.env.REACT_APP_BACKEND_URL + "allSessions"
+        );
+        setAllSessions(response.data.data.reverse());
+      } catch (error) {
+        console.log("error is:", error);
+        alert(error.message);
+      }
+    }
+    if (loginMdoe) {
+      newSessionID();
+    }
+  }
+
+  async function checkSession(sessionID) {
+    try {
+      const response = await axios.post(process.env.REACT_APP_BACKEND_URL, {
+        session: sessionID,
+      });
+      const { data } = response.data;
+      Cookies.set("sessionID", data.sessionID, { expires: 9 });
+      setSessionID(data.sessionID);
+      setEmail(data.email);
+      setName(data.name);
+      setloginMdoe(false);
+    } catch (error) {
+      console.log("Error is:", error);
+      alert(error.message);
+    }
+  }
+
   return (
     <>
       <div className="prev-session">
         <button
-          onClick={() => setloginMdoe(!loginMdoe)}
+          onClick={() => handleChange()}
           className="button-92"
           role="button"
         >
@@ -93,7 +130,7 @@ function App() {
       <div className="App">
         {loginMdoe ? (
           <>
-            <div className="form-group">
+            {/* <div className="form-group">
               <span>Session ID:</span>
               <input
                 value={prevSession}
@@ -106,7 +143,11 @@ function App() {
             </div>
             <button onClick={submitSession} className="button-86" role="button">
               Submit
-            </button>
+            </button> */}
+            <p>
+              All sessions are listed here to test and retrieve data please
+              click on one of the them
+            </p>
           </>
         ) : (
           <>
@@ -140,13 +181,13 @@ function App() {
           <p className="copy-btn">
             <span ref={spanRef}>{sessionID}</span>
             <div className="er">
-              <button
+              {/* <button
                 onClick={copyToClipboard}
                 className="button-86"
                 role="button"
               >
                 Copy Session
-              </button>
+              </button> */}
               <button
                 onClick={newSessionID}
                 className="button-86"
@@ -160,6 +201,33 @@ function App() {
         {/* <button onClick={sendData}>
         <h3>send message</h3>
       </button> */}
+        {loginMdoe && allSessions ? (
+          <>
+            <table className="zigzag">
+              <thead>
+                <tr>
+                  <th className="header">Name</th>
+                  <th className="header">Email</th>
+                  <th className="header">Session</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allSessions.map((el) => {
+                  return (
+                    <tr
+                      key={uuidv4()}
+                      onClick={() => checkSession(el.sessionID)}
+                    >
+                      <td>{el.name}</td>
+                      <td>{el.email}</td>
+                      <td>{el.sessionID}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </>
+        ) : null}
       </div>
     </>
   );

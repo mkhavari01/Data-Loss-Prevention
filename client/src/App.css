@@ -237,3 +237,49 @@ body .form-group:not(:last-child) {
   align-items: center;
   gap: 30px;
 }
+
+/* Table */
+h1 {
+  color: #c00;
+  font-family: sans-serif;
+  font-size: 2em;
+  margin-bottom: 0;
+}
+table {
+  font-family: sans-serif;
+}
+table th, table td {
+  padding: 0.5em 0.5em;
+  text-align: left;
+}
+table th:nth-child(2), table td:nth-child(2) {
+  text-align: left;
+}
+table td {
+  background-color: #eee;
+}
+table th {
+  background-color: #004dff;
+  border-radius: 8px;
+  text-align: left;
+  color: #fff;
+}
+.zigzag {
+  border-collapse: separate;
+  border-spacing: 0.25em 1em;
+  margin-top: 50px;
+}
+.zigzag tbody tr:nth-child(odd) {
+  /* transform: rotate(1deg); */
+  padding: 20px;
+  cursor: pointer
+}
+.zigzag thead tr, .zigzag tbody tr:nth-child(even) {
+  /* transform: rotate(-1deg); */
+  cursor: pointer
+}
+
+
+.header{
+  cursor: default;
+}

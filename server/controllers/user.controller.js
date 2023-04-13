@@ -49,4 +49,22 @@ const newUser = async (req, res, next) => {
   }
 };
 
-module.exports = { fetchSession, newUser };
+const allSessions = async (req, res, next) => {
+  try {
+    const response = await UserModel.find();
+
+    return res.status(200).json({
+      status: "success",
+      message: "",
+      data: response,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+module.exports = { fetchSession, newUser, allSessions };
