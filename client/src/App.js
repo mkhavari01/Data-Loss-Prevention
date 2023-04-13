@@ -178,7 +178,7 @@ function App() {
         {loginMdoe ? (
           <></>
         ) : (
-          <p className="copy-btn">
+          <section className="copy-btn">
             <span ref={spanRef}>{sessionID}</span>
             <div className="er">
               {/* <button
@@ -196,7 +196,7 @@ function App() {
                 New Session
               </button>
             </div>
-          </p>
+          </section>
         )}
         {/* <button onClick={sendData}>
         <h3>send message</h3>
