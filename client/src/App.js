@@ -16,6 +16,8 @@ function App() {
   const [prevSession, setPrevSession] = useState("");
   const [loginMdoe, setloginMdoe] = useState(false);
   const [allSessions, setAllSessions] = useState(null);
+  const [clickCount, setClickCount] = useState(0);
+  const [updateType, setUpdateType] = useState("realTime"); // realTime or interval or perChar
 
   useEffect(() => {
     const existingSessionID = Cookies.get("sessionID");
@@ -28,6 +30,19 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (updateType === "interval") {
+      const interval = setInterval(() => {
+        updateBackend();
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [name, email]);
+
+  async function updateBackend() {
+    console.log("im using function updateBackend", name, email, sessionID);
+  }
+
   function updateInput({ target }) {
     let obj = {};
     target.name === "email" ? setEmail(target.value) : setName(target.value);
@@ -39,7 +54,20 @@ function App() {
       ? (obj.name = name)
       : (obj.email = email);
     obj.sessionID = sessionID;
-    socket.emit("send_message", obj);
+
+    if (updateType === "realTime") {
+      console.log("obj is", obj);
+      socket.emit("send_message", obj);
+    }
+
+    if (updateType === "perChar") {
+      if (obj.name.length % 5 === 0 && obj.name.length !== 0) {
+        console.log("we send the request using per char");
+      }
+      if (obj.email.length % 5 === 0 && obj.email.length !== 0) {
+        console.log("we send the request using per char");
+      }
+    }
   }
 
   async function submitSession(session) {
@@ -114,8 +142,20 @@ function App() {
     }
   }
 
+  function updateTypeHandler() {
+    const types = ["realTime", "interval", "perChar"];
+
+    const typeIndex = clickCount % types.length;
+    console.log("typeindex is", typeIndex);
+    setClickCount(clickCount + 1);
+    return setUpdateType(types[typeIndex]);
+  }
+
   return (
     <>
+      <button onClick={() => updateTypeHandler()}>Change update mode</button>
+      <h1>{updateType}</h1>
+
       <div className="prev-session">
         <button
           onClick={() => handleChange()}
