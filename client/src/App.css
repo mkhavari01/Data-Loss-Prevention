@@ -311,6 +311,14 @@ tbody{
     flex-direction: column;
 }
 
+.update-type{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
 @media screen and (max-width: 552px) {
   .button-92 {
     width: auto;

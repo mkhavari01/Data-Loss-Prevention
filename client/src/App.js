@@ -33,15 +33,11 @@ function App() {
   useEffect(() => {
     if (updateType === "interval") {
       const interval = setInterval(() => {
-        updateBackend();
+        updateUser({ sessionID, name, email });
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, [name, email]);
-
-  async function updateBackend() {
-    console.log("im using function updateBackend", name, email, sessionID);
-  }
+  }, [name, email, updateType]);
 
   function updateInput({ target }) {
     let obj = {};
@@ -62,12 +58,15 @@ function App() {
 
     if (updateType === "perChar") {
       if (obj.name.length % 5 === 0 && obj.name.length !== 0) {
-        console.log("we send the request using per char");
+        updateUser(obj);
       }
       if (obj.email.length % 5 === 0 && obj.email.length !== 0) {
         console.log("we send the request using per char");
+        updateUser(obj);
       }
     }
+
+    return obj;
   }
 
   async function submitSession(session) {
@@ -145,16 +144,29 @@ function App() {
   function updateTypeHandler() {
     const types = ["realTime", "interval", "perChar"];
 
-    const typeIndex = clickCount % types.length;
-    console.log("typeindex is", typeIndex);
+    setUpdateType(types[clickCount % types.length]);
     setClickCount(clickCount + 1);
-    return setUpdateType(types[typeIndex]);
+  }
+
+  async function updateUser(obj) {
+    try {
+      const response = await axios.put(
+        process.env.REACT_APP_BACKEND_URL + "updateUser",
+        obj
+      );
+      console.log("response is ", response);
+    } catch (error) {
+      console.log("Error is:", error);
+      alert(error.message);
+    }
   }
 
   return (
     <>
-      <button onClick={() => updateTypeHandler()}>Change update mode</button>
-      <h1>{updateType}</h1>
+      <section className="update-type">
+        <button onClick={() => updateTypeHandler()}>Change update mode</button>
+        <h1>{updateType}</h1>
+      </section>
 
       <div className="prev-session">
         <button
