@@ -4,11 +4,9 @@ import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
 
 // handlers
 import { updateUser } from "./handlers/updateUser";
-import newSessionID from "./handlers/newSessionID";
 import { checkSession } from "./handlers/checkSession";
 import { handleChange } from "./handlers/handleChange";
 import { submitSession } from "./handlers/submitSession";
@@ -52,7 +50,7 @@ function App() {
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, [name, email, updateType]);
+  }, [name, email, updateType, sessionID]);
 
   function updateInput({ target }) {
     let obj = {};
@@ -94,6 +92,15 @@ function App() {
     setClickCount(updatedClickCount);
   }
 
+  function newSessionID() {
+    console.log("here");
+    setEmail("");
+    setName("");
+    const newSessionID = uuidv4();
+    Cookies.set("sessionID", newSessionID, { expires: 9 });
+    setSessionID(newSessionID);
+  }
+
   return (
     <>
       {!loginMode && (
@@ -112,6 +119,7 @@ function App() {
 
       <div className="prev-session">
         <button
+          id="changeLoginMode"
           onClick={() =>
             handleChange(
               setLoginMode,
@@ -173,7 +181,7 @@ function App() {
             <span ref={spanRef}>{sessionID}</span>
             <div className="er">
               <button
-                onClick={() => newSessionID(setEmail, setName, setSessionID)}
+                onClick={() => newSessionID()}
                 className="button-86"
                 role="button"
               >

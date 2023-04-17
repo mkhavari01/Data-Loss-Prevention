@@ -241,10 +241,13 @@ body .form-group:not(:last-child) {
 
 /* Table */
 h1 {
-  color: #c00;
+  
+  color: var(#111827);
   font-family: sans-serif;
   font-size: 2em;
   margin-bottom: 0;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 table {
   font-family: sans-serif;
@@ -329,7 +332,7 @@ tbody{
   }
   .tbody-wrapper {
     max-height: 3200px;
-    max-width: 85%;
+    max-width: 320px;
     overflow-y: scroll;
   }
 }
