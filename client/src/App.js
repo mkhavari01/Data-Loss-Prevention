@@ -22,7 +22,7 @@ function App() {
   const [loginMode, setLoginMode] = useState(false);
   const [allSessions, setAllSessions] = useState(null);
   const [clickCount, setClickCount] = useState(0);
-  const [updateType, setUpdateType] = useState("realTime"); // realTime or interval or perChar
+  const [updateType, setUpdateType] = useState("realTime"); // realTime or realTimeHttp or interval or perChar
 
   useEffect(() => {
     const existingSessionID = Cookies.get("sessionID");
@@ -47,13 +47,14 @@ function App() {
     if (updateType === "interval") {
       const interval = setInterval(() => {
         updateUser({ sessionID, name, email });
-      }, 2000);
+      }, 2500);
       return () => clearInterval(interval);
     }
   }, [name, email, updateType, sessionID]);
 
-  function updateInput({ target }) {
+  async function updateInput({ target }) {
     let obj = {};
+    let prevStates = { email, name };
     target.name === "email" ? setEmail(target.value) : setName(target.value);
 
     target.name === "email"
@@ -65,26 +66,45 @@ function App() {
     obj.sessionID = sessionID;
 
     if (updateType === "realTime") {
-      console.log("obj is", obj);
+      console.log("Websocket connection");
       socket.emit("send_message", obj);
+
+      socket.on("ErrorUpdate", (data) => {
+        alert("Error occured while we were trying to sync", data.message);
+        setEmail(prevStates.email);
+        setName(prevStates.name);
+      });
+    }
+
+    if (updateType === "realTimeHttp") {
+      handleApiResponse(obj, prevStates);
     }
 
     if (updateType === "perChar") {
-      if (obj.name.length % 5 === 0 && obj.name.length !== 0) {
-        console.log("we send the request using per char");
-        updateUser(obj);
-      }
-      if (obj.email.length % 5 === 0 && obj.email.length !== 0) {
-        console.log("we send the request using per char");
-        updateUser(obj);
+      console.log("we send the request using per char");
+      if (
+        (obj.name.length % 5 === 0 && obj.name.length !== 0) ||
+        (obj.email.length % 5 === 0 && obj.email.length !== 0)
+      ) {
+        handleApiResponse(obj, prevStates);
       }
     }
 
     return obj;
   }
 
+  async function handleApiResponse(obj, prevStates) {
+    try {
+      await updateUser(obj);
+    } catch (error) {
+      console.log("error is :", error.message);
+      setEmail(prevStates.email);
+      setName(prevStates.name);
+    }
+  }
+
   function updateTypeHandler() {
-    const types = ["realTime", "interval", "perChar"];
+    const types = ["realTime", "realTimeHttp", "interval", "perChar"];
     const updatedClickCount = clickCount + 1;
     const updatedType = types[updatedClickCount % types.length];
 
@@ -93,12 +113,21 @@ function App() {
   }
 
   function newSessionID() {
-    console.log("here");
     setEmail("");
     setName("");
     const newSessionID = uuidv4();
     Cookies.set("sessionID", newSessionID, { expires: 9 });
     setSessionID(newSessionID);
+  }
+
+  function description() {
+    const types = [
+      "Real-time updates using a websocket connection after each letter is typed.",
+      "Real-time updates using an HTTP connection and a REST API after each letter is typed.",
+      "Updates using an HTTP connection and a REST API at fixed intervals of 2.5 seconds.",
+      "Updates using an HTTP connection and a REST API after 5 letters are typed.",
+    ];
+    return types[clickCount % types.length];
   }
 
   return (
@@ -113,7 +142,7 @@ function App() {
             Change update mode
           </button>
 
-          <h1>{updateType}</h1>
+          <h1>{description()}</h1>
         </section>
       )}
 

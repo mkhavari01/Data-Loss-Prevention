@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/user.router.js");
+const testingRouter = require("./routes/testing.router.js");
 const cookieParser = require("cookie-parser");
 const UserModel = require("./models/user.model.js");
 const dotenv = require("dotenv");
@@ -44,15 +45,20 @@ io.on("connection", (socket) => {
           email: data.email,
           sessionID: data.sessionID,
         });
-        const response2 = await newUser.save();
+        await newUser.save();
       }
     } catch (error) {
+      socket.emit("ErrorUpdate", {
+        status: "Error occurred",
+        message: error.message,
+      });
       console.log("Error:", error);
     }
   });
 });
 
 app.use("/", userRouter);
+app.use("/test", testingRouter);
 
 mongoose
   .connect(uri, {
