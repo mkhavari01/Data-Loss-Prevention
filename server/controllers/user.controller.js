@@ -45,6 +45,8 @@ const updateUser = async (req, res, next) => {
   try {
     const { session, email, name } = req.body;
 
+    console.log("here");
+
     let response = await UserModel.findOneAndUpdate(
       { session: session },
       { $set: { name: name, email: email } },
