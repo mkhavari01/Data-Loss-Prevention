@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
@@ -44,13 +44,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (updateType === "interval") {
+    if (updateType === "interval" && !loginMode) {
       const interval = setInterval(() => {
         updateUser({ sessionID, name, email });
       }, 2500);
       return () => clearInterval(interval);
     }
-  }, [name, email, updateType, sessionID]);
+  }, [name, email, updateType, sessionID, loginMode]);
 
   async function updateInput({ target }) {
     let obj = {};
@@ -81,11 +81,11 @@ function App() {
     }
 
     if (updateType === "perChar") {
-      console.log("we send the request using per char");
       if (
         (obj.name.length % 5 === 0 && obj.name.length !== 0) ||
         (obj.email.length % 5 === 0 && obj.email.length !== 0)
       ) {
+        console.log("we send the request using per char");
         handleApiResponse(obj, prevStates);
       }
     }
@@ -120,7 +120,7 @@ function App() {
     setSessionID(newSessionID);
   }
 
-  function description() {
+  const description = useMemo(() => {
     const types = [
       "Real-time updates using a websocket connection after each letter is typed.",
       "Real-time updates using an HTTP connection and a REST API after each letter is typed.",
@@ -128,7 +128,7 @@ function App() {
       "Updates using an HTTP connection and a REST API after 5 letters are typed.",
     ];
     return types[clickCount % types.length];
-  }
+  }, [clickCount]);
 
   return (
     <>
@@ -142,7 +142,7 @@ function App() {
             Change update mode
           </button>
 
-          <h1>{description()}</h1>
+          <h1>{description}</h1>
         </section>
       )}
 
@@ -213,6 +213,7 @@ function App() {
                 onClick={() => newSessionID()}
                 className="button-86"
                 role="button"
+                id="newSession"
               >
                 New Session
               </button>

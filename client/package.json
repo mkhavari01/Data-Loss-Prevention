@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@playwright/test": "^1.32.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -19,8 +20,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
-    "eject": "react-scripts eject"
+    "test": "npx playwright test test/App.test.js --headed",
+    "eject": "react-scripts eject",
+    "record" : "npx playwright codegen http://localhost:3000/"
   },
   "eslintConfig": {
     "extends": [
