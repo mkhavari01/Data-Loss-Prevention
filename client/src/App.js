@@ -15,7 +15,7 @@ const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
 function App() {
   const spanRef = useRef(null);
-  const [sessionID, setSessionID] = useState("");
+  const [session, setSession] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [prevSession, setPrevSession] = useState("");
@@ -25,32 +25,32 @@ function App() {
   const [updateType, setUpdateType] = useState("realTime"); // realTime or realTimeHttp or interval or perChar
 
   useEffect(() => {
-    const existingSessionID = Cookies.get("sessionID");
+    const existingSession = Cookies.get("session");
 
-    if (existingSessionID) {
+    if (existingSession) {
       submitSession(
-        existingSessionID,
+        existingSession,
         prevSession,
         setName,
         setEmail,
-        setSessionID,
-        newSessionID,
+        setSession,
+        newSession,
         setLoginMode,
         setPrevSession
       );
     } else {
-      newSessionID(setEmail, setName, setSessionID);
+      newSession(setEmail, setName, setSession);
     }
   }, []);
 
   useEffect(() => {
     if (updateType === "interval" && !loginMode) {
       const interval = setInterval(() => {
-        updateUser({ sessionID, name, email });
+        updateUser({ session, name, email });
       }, 2500);
       return () => clearInterval(interval);
     }
-  }, [name, email, updateType, sessionID, loginMode]);
+  }, [name, email, updateType, session, loginMode]);
 
   async function updateInput({ target }) {
     let obj = {};
@@ -63,7 +63,7 @@ function App() {
     Object.keys(obj).includes("email")
       ? (obj.name = name)
       : (obj.email = email);
-    obj.sessionID = sessionID;
+    obj.session = session;
 
     if (updateType === "realTime") {
       console.log("Websocket connection");
@@ -112,12 +112,12 @@ function App() {
     setClickCount(updatedClickCount);
   }
 
-  function newSessionID() {
+  function newSession() {
     setEmail("");
     setName("");
-    const newSessionID = uuidv4();
-    Cookies.set("sessionID", newSessionID, { expires: 9 });
-    setSessionID(newSessionID);
+    const newSession2 = uuidv4();
+    Cookies.set("session", newSession2, { expires: 9 });
+    setSession(newSession2);
   }
 
   const description = useMemo(() => {
@@ -154,10 +154,10 @@ function App() {
               setLoginMode,
               loginMode,
               setAllSessions,
-              newSessionID,
+              newSession,
               setEmail,
               setName,
-              setSessionID
+              setSession
             )
           }
           className="button-92"
@@ -207,10 +207,10 @@ function App() {
           <></>
         ) : (
           <section className="copy-btn">
-            <span ref={spanRef}>{sessionID}</span>
+            <span ref={spanRef}>{session}</span>
             <div className="er">
               <button
-                onClick={() => newSessionID()}
+                onClick={() => newSession()}
                 className="button-86"
                 role="button"
                 id="newSession"
@@ -232,8 +232,8 @@ function App() {
                           key={uuidv4()}
                           onClick={() =>
                             checkSession(
-                              el.sessionID,
-                              setSessionID,
+                              el.session,
+                              setSession,
                               setEmail,
                               setName,
                               setLoginMode
@@ -242,7 +242,7 @@ function App() {
                         >
                           <td>{el.name}</td>
                           <td>{el.email}</td>
-                          <td>{el.sessionID}</td>
+                          <td>{el.session}</td>
                         </tr>
                       );
                     })}

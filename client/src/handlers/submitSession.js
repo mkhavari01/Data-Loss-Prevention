@@ -6,8 +6,8 @@ async function submitSession(
   prevSession,
   setName,
   setEmail,
-  setSessionID,
-  newSessionID,
+  setSession,
+  newSession,
   setLoginMode,
   setPrevSession
 ) {
@@ -18,10 +18,10 @@ async function submitSession(
     if (res.data.data) {
       setName(res.data.data.name);
       setEmail(res.data.data.email);
-      setSessionID(res.data.data.sessionID);
-      Cookies.set("sessionID", res.data.data.sessionID, { expires: 9 });
+      setSession(res.data.data.session);
+      Cookies.set("session", res.data.data.session, { expires: 9 });
     } else {
-      newSessionID(setEmail, setName, setSessionID);
+      newSession(setEmail, setName, setSession);
     }
   } catch (error) {
     console.log("error is:", error);

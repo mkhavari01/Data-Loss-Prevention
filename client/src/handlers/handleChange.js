@@ -4,10 +4,10 @@ async function handleChange(
   setLoginMode,
   loginMode,
   setAllSessions,
-  newSessionID,
+  newSession,
   setEmail,
   setName,
-  setSessionID
+  setSession
 ) {
   setLoginMode(!loginMode);
   if (!loginMode) {
@@ -23,7 +23,7 @@ async function handleChange(
     }
   }
   if (loginMode) {
-    newSessionID(setEmail, setName, setSessionID);
+    newSession(setEmail, setName, setSession);
   }
 }
 

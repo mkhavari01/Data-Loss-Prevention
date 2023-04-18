@@ -4,36 +4,10 @@ const fetchSession = async (req, res, next) => {
   try {
     const { session } = req.body;
 
-    const sessionID = req.cookies;
-    console.log("sessionID is", sessionID);
+    console.log("session is", session);
 
-    const response = await UserModel.findOne({ sessionID: session });
+    const response = await UserModel.findOne({ session: session });
     console.log("res is", response);
-
-    return res.status(200).json({
-      status: "success",
-      message: "",
-      data: response,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "error",
-      message: error.message,
-      data: null,
-    });
-  }
-};
-
-const newUser = async (req, res, next) => {
-  try {
-    const { name, email, sessionID } = req.body;
-
-    const newUser = new UserModel({
-      name,
-      email,
-      sessionID,
-    });
-    const response = await newUser.save();
 
     return res.status(200).json({
       status: "success",
@@ -69,13 +43,22 @@ const allSessions = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const { sessionID, email, name } = req.body;
+    const { session, email, name } = req.body;
 
-    const response = await UserModel.findOneAndUpdate(
-      { sessionID: sessionID },
+    let response = await UserModel.findOneAndUpdate(
+      { session: session },
       { $set: { name: name, email: email } },
       { new: true }
     );
+
+    if (!response) {
+      const newUser = new UserModel({
+        name,
+        email,
+        session,
+      });
+      response = await newUser.save();
+    }
 
     return res.status(200).json({
       status: "success",
@@ -91,4 +74,4 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-module.exports = { fetchSession, newUser, allSessions, updateUser };
+module.exports = { fetchSession, allSessions, updateUser };

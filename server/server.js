@@ -4,7 +4,6 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/user.router.js");
-const testingRouter = require("./routes/testing.router.js");
 const cookieParser = require("cookie-parser");
 const UserModel = require("./models/user.model.js");
 const dotenv = require("dotenv");
@@ -35,7 +34,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", async (data) => {
     try {
       const response = await UserModel.findOneAndUpdate(
-        { sessionID: data.sessionID },
+        { session: data.session },
         { $set: { name: data.name, email: data.email } },
         { new: true }
       );
@@ -43,7 +42,7 @@ io.on("connection", (socket) => {
         const newUser = new UserModel({
           name: data.name,
           email: data.email,
-          sessionID: data.sessionID,
+          session: data.session,
         });
         await newUser.save();
       }
@@ -58,7 +57,6 @@ io.on("connection", (socket) => {
 });
 
 app.use("/", userRouter);
-app.use("/test", testingRouter);
 
 mongoose
   .connect(uri, {
