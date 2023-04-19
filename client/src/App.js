@@ -157,6 +157,7 @@ function App() {
             onClick={() => updateTypeHandler()}
             className="button-40"
             role="button"
+            id="changeUpdateMode"
           >
             Change update mode
           </button>

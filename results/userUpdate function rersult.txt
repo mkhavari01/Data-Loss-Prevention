@@ -1,0 +1,219 @@
+userUpdate function rersult 
+inserting 328 user data into mongodb
+
+{
+	title: undefined,
+	url: 'http://localhost:3001',
+	socketPath: undefined,
+	connections: 328,
+	sampleInt: 1000,
+	pipelining: 1,
+	workers: undefined,
+	duration: 1.07,
+	samples: 1,
+	start: 2023 - 04 - 19 T07: 34: 10.496 Z,
+	finish: 2023 - 04 - 19 T07: 34: 11.564 Z,
+	errors: 0,
+	timeouts: 0,
+	mismatches: 0,
+	non2xx: 0,
+	resets: 0,
+	'1xx': 0,
+	'2xx': 328,
+	'3xx': 0,
+	'4xx': 0,
+	'5xx': 0,
+	statusCodeStats: {
+		'200': {
+			count: 328
+		}
+	},
+	latency: {
+		average: 690.08,
+		mean: 690.08,
+		stddev: 45.11,
+		min: 612,
+		max: 777,
+		p0_001: 612,
+		p0_01: 612,
+		p0_1: 612,
+		p1: 614,
+		p2_5: 616,
+		p10: 630,
+		p25: 651,
+		p50: 692,
+		p75: 727,
+		p90: 752,
+		p97_5: 764,
+		p99: 769,
+		p99_9: 777,
+		p99_99: 777,
+		p99_999: 777,
+		totalCount: 328
+	},
+	requests: {
+		average: 328,
+		mean: 328,
+		stddev: 0,
+		min: 328,
+		max: 328,
+		total: 328,
+		p0_001: 328,
+		p0_01: 328,
+		p0_1: 328,
+		p1: 328,
+		p2_5: 328,
+		p10: 328,
+		p25: 328,
+		p50: 328,
+		p75: 328,
+		p90: 328,
+		p97_5: 328,
+		p99: 328,
+		p99_9: 328,
+		p99_99: 328,
+		p99_999: 328,
+		sent: 328
+	},
+	throughput: {
+		average: 167616,
+		mean: 167616,
+		stddev: 0,
+		min: 167632,
+		max: 167632,
+		total: 167632,
+		p0_001: 167679,
+		p0_01: 167679,
+		p0_1: 167679,
+		p1: 167679,
+		p2_5: 167679,
+		p10: 167679,
+		p25: 167679,
+		p50: 167679,
+		p75: 167679,
+		p90: 167679,
+		p97_5: 167679,
+		p99: 167679,
+		p99_9: 167679,
+		p99_99: 167679,
+		p99_999: 167679
+	}
+}
+
+
+updating db results above code was for creating results
+Running 10s test @ http://localhost:3001
+328 connections
+
+running [==                  ] 10%
+┌─────────┬────────┬────────┬────────┬────────┬───────────┬──────────┬────────┐
+│ Stat    │ 2.5%   │ 50%    │ 97.5%  │ 99%    │ Avg       │ Stdev    │ Max    │
+├─────────┼────────┼────────┼────────┼────────┼───────────┼──────────┼────────┤
+│ Latency │ 349 ms │ 440 ms │ 525 ms │ 529 ms │ 438.85 ms │ 53.58 ms │ 535 ms │
+└─────────┴────────┴────────┴────────┴────────┴───────────┴──────────┴────────┘
+┌───────────┬────────┬────────┬────────┬────────┬────────┬───────┬────────┐
+│ Stat      │ 1%     │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev │ Min    │
+├───────────┼────────┼────────┼────────┼────────┼────────┼───────┼────────┤
+│ Req/Sec   │ 328    │ 328    │ 328    │ 328    │ 328    │ 0     │ 328    │
+├───────────┼────────┼────────┼────────┼────────┼────────┼───────┼────────┤
+│ Bytes/Sec │ 172 kB │ 172 kB │ 172 kB │ 172 kB │ 172 kB │ 0 B   │ 172 kB │
+└───────────┴────────┴────────┴────────┴────────┴────────┴───────┴────────┘
+
+Req/Bytes counts sampled once per second.
+# of samples: 1
+
+328 requests in 1.07s, 172 kB read
+Finished Bench null {
+  title: undefined,
+  url: 'http://localhost:3001',
+  socketPath: undefined,
+  connections: 328,
+  sampleInt: 1000,
+  pipelining: 1,
+  workers: undefined,
+  duration: 1.07,
+  samples: 1,
+  start: 2023-04-19T07:54:45.043Z,
+  finish: 2023-04-19T07:54:46.110Z,
+  errors: 0,
+  timeouts: 0,
+  mismatches: 0,
+  non2xx: 0,
+  resets: 0,
+  '1xx': 0,
+  '2xx': 328,
+  '3xx': 0,
+  '4xx': 0,
+  '5xx': 0,
+  statusCodeStats: { '200': { count: 328 } },
+  latency: {
+    average: 438.85,
+    mean: 438.85,
+    stddev: 53.58,
+    min: 332,
+    max: 535,
+    p0_001: 332,
+    p0_01: 332,
+    p0_1: 332,
+    p1: 338,
+    p2_5: 349,
+    p10: 366,
+    p25: 392,
+    p50: 440,
+    p75: 484,
+    p90: 510,
+    p97_5: 525,
+    p99: 529,
+    p99_9: 535,
+    p99_99: 535,
+    p99_999: 535,
+    totalCount: 328
+  },
+  requests: {
+    average: 328,
+    mean: 328,
+    stddev: 0,
+    min: 328,
+    max: 328,
+    total: 328,
+    p0_001: 328,
+    p0_01: 328,
+    p0_1: 328,
+    p1: 328,
+    p2_5: 328,
+    p10: 328,
+    p25: 328,
+    p50: 328,
+    p75: 328,
+    p90: 328,
+    p97_5: 328,
+    p99: 328,
+    p99_9: 328,
+    p99_99: 328,
+    p99_999: 328,
+    sent: 328
+  },
+  throughput: {
+    average: 171584,
+    mean: 171584,
+    stddev: 0,
+    min: 171597,
+    max: 171597,
+    total: 171597,
+    p0_001: 171647,
+    p0_01: 171647,
+    p0_1: 171647,
+    p1: 171647,
+    p2_5: 171647,
+    p10: 171647,
+    p25: 171647,
+    p50: 171647,
+    p75: 171647,
+    p90: 171647,
+    p97_5: 171647,
+    p99: 171647,
+    p99_9: 171647,
+    p99_99: 171647,
+    p99_999: 171647
+  }
+}
