@@ -13,7 +13,7 @@
 5. cd client<br/>
 6. npm start
 
-<strong>in this mode by cd to server or client and running npm run test command u can visit tests available</strong>
+<strong>in this mode by cd to server or client and running npm run test command u can visit available tests</strong>
 
 # Technical  Documentation
 
