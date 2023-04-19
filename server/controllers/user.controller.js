@@ -43,13 +43,13 @@ const allSessions = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const { session, email, name } = req.body;
+    const { session, email, name, index } = req.body;
 
     console.log("here");
 
     let response = await UserModel.findOneAndUpdate(
       { session: session },
-      { $set: { name: name, email: email } },
+      { $set: { name: name, email: email, index } },
       { new: true }
     );
 
