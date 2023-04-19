@@ -15,6 +15,9 @@
 
 <strong>in this mode by cd to server or client and running npm run test command u can visit available tests</strong>
 
+<strong>Graphs for Load testing results are availabe at results directory</strong>
+
+
 # Technical  Documentation
 
 <h2>Overview</h2>
