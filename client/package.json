@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "npx playwright test test/App.test.js --headed",
     "eject": "react-scripts eject",
-    "record" : "npx playwright codegen http://localhost:3000/"
+    "record": "npx playwright codegen http://localhost:3000/"
   },
   "eslintConfig": {
     "extends": [

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 import "./App.css";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import Cookies from "js-cookie";
 import io from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
@@ -10,6 +10,7 @@ import { updateUser } from "./handlers/updateUser";
 import { checkSession } from "./handlers/checkSession";
 import { handleChange } from "./handlers/handleChange";
 import { submitSession } from "./handlers/submitSession";
+import { debounce } from "./handlers/debounce";
 
 const socket = io.connect(process.env.REACT_APP_BACKEND_URL);
 
@@ -22,7 +23,7 @@ function App() {
   const [loginMode, setLoginMode] = useState(false);
   const [allSessions, setAllSessions] = useState(null);
   const [clickCount, setClickCount] = useState(0);
-  const [updateType, setUpdateType] = useState("realTime"); // realTime or realTimeHttp or interval or perChar
+  const [updateType, setUpdateType] = useState("debounce"); // realTime or realTimeHttp or interval or perChar
 
   useEffect(() => {
     const existingSession = Cookies.get("session");
@@ -90,8 +91,19 @@ function App() {
       }
     }
 
+    if (updateType === "debounce") {
+      optimizedVersion(obj, prevStates);
+    }
+
     return obj;
   }
+
+  const handleDebounce = (obj, prevStates) => {
+    console.log("debounce func called", obj);
+    handleApiResponse(obj, prevStates);
+  };
+
+  const optimizedVersion = useCallback(debounce(handleDebounce), []);
 
   async function handleApiResponse(obj, prevStates) {
     try {
@@ -104,7 +116,13 @@ function App() {
   }
 
   function updateTypeHandler() {
-    const types = ["realTime", "realTimeHttp", "interval", "perChar"];
+    const types = [
+      "debounce",
+      "realTime",
+      "realTimeHttp",
+      "interval",
+      "perChar",
+    ];
     const updatedClickCount = clickCount + 1;
     const updatedType = types[updatedClickCount % types.length];
 
@@ -122,6 +140,7 @@ function App() {
 
   const description = useMemo(() => {
     const types = [
+      "Debounce delays the execution of a function until after a certain amount of time has passed without that function being called again.",
       "Real-time updates using a websocket connection after each letter is typed.",
       "Real-time updates using an HTTP connection and a REST API after each letter is typed.",
       "Updates using an HTTP connection and a REST API at fixed intervals of 2.5 seconds.",
