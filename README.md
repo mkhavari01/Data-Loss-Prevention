@@ -9,9 +9,11 @@
 
 <h4>if you don't have Docker</h4>
 3. cd server uncommnet code line 2 in .env file <br/>
-4. npm run start<br/>
+4. npm start<br/>
 5. cd client<br/>
 6. npm start
+
+<strong>in this mode by cd to server or client and running npm run test command u can visit available tests</strong>
 
 # Technical  Documentation
 
