@@ -58,7 +58,6 @@ io.on("connection", (socket) => {
 });
 
 app.use("/", userRouter);
-mongoose.set("strictQuery", false);
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
