@@ -10,14 +10,14 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/task-cloud";
+const uri = process.env.MONGODB_URI || "mongodb://mongo:27017/task-cloud";
 
 const app = express();
 
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 const server = http.createServer(app);
 
@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
 });
 
 app.use("/", userRouter);
-
+mongoose.set("strictQuery", false);
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
@@ -68,4 +68,4 @@ mongoose
       console.log(process.env.MONGODB_URI);
     })
   )
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err.message, err, "ERror"));

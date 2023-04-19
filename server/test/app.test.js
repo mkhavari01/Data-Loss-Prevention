@@ -44,7 +44,7 @@ function fetchSession() {
   autocannon.track(instance);
 
   function finishedBench(err, res) {
-    console.log("Finished Bench", err, res);
+    console.log("Finished Bench fetchSession", err, res);
   }
 }
 
@@ -79,7 +79,7 @@ function fetchAllRecords() {
   autocannon.track(instance);
 
   function finishedBench(err, res) {
-    console.log("Finished Bench", err, res);
+    console.log("Finished Bench fetchAllRecords", err, res);
   }
 }
 
@@ -123,7 +123,7 @@ function userUpdate() {
   autocannon.track(instance);
 
   function finishedBench(err, res) {
-    console.log("Finished Bench", err, res);
+    console.log("Finished Bench userUpdate", err, res);
   }
 }
 
@@ -167,7 +167,7 @@ function intervalUpdate() {
   autocannon.track(instance);
 
   function finishedBench(err, res) {
-    console.log("Finished Bench", err, res);
+    console.log("Finished Bench intervalUpdate", err, res);
     reqTimes++;
   }
 
@@ -209,10 +209,10 @@ function intervalUpdate() {
     }
     autocannon.track(instance);
   }, 5000); // Repeat the request every 5 seconds
-  console.log("4444444444444444444444444444444444444444444");
+  console.log("------------------------------------------------");
 }
 
-// userUpdate();
-// intervalUpdate();
-// fetchSession();
-// fetchAllRecords();
+userUpdate();
+intervalUpdate();
+fetchSession();
+fetchAllRecords();

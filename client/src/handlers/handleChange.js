@@ -11,7 +11,7 @@ async function handleChange(
 ) {
   setLoginMode(!loginMode);
   if (!loginMode) {
-    console.log("we r in here");
+    console.log("we r in login mode");
     try {
       const response = await axios.get(
         process.env.REACT_APP_BACKEND_URL + "allSessions"
