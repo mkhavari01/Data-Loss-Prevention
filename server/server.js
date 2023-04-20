@@ -10,8 +10,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-// const uri = process.env.MONGODB_URI || "mongodb://mongo:27017/task-cloud";
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/task-cloud";
+const uri = process.env.MONGODB_URI || "mongodb://mongo:27017/task-cloud";
+//const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/task-cloud";
 
 const app = express();
 
